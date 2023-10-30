@@ -21,6 +21,7 @@ return new class extends Migration
             $table->enum('jenis_kelamin', ['laki-laki', 'perempuan']);
             $table->date('tanggal_lahir');
             $table->date('tanggal_masuk');
+            $table->string('urutan_masuk');
             $table->timestamps();
         });
     }

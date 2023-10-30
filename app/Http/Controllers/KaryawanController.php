@@ -50,16 +50,10 @@ class KaryawanController extends Controller
         $tanggal_masuk = $request->tanggal_masuk;
         $tahun_masuk = date('Y', strtotime($tanggal_masuk));
 
-        $urutan_masuk_terakhir = '0001';
+        $urutan_masuk_terakhir = Karyawan::whereYear('tanggal_masuk', $tahun_masuk)->max('urutan_masuk');
+        $urutan_masuk_terakhir = str_pad($urutan_masuk_terakhir + 1, 4, '0', STR_PAD_LEFT);
 
-        // if ($tahun_masuk != date('Y')) {
-        //     $urutan_masuk_baru = '0001';
-        // } else {
-        //     // Jika tahun sama dan ada urutan masuk sebelumnya, tingkatkan urutan masuk
-        //     $urutan_masuk_baru = str_pad(intval($urutan_masuk_terakhir) + 1, 4, '0', STR_PAD_LEFT);
-        // }
-
-        $nik = $tahun_lahir . "." . $tahun_masuk . "." . "0001";
+        $nik = $tahun_lahir . "." . $tahun_masuk . "." . $urutan_masuk_terakhir;
 
         Karyawan::create([
             'nik' => $nik,
@@ -68,6 +62,7 @@ class KaryawanController extends Controller
             'jenis_kelamin' => $request->jenis_kelamin,
             'tanggal_masuk' => $request->tanggal_masuk,
             'tanggal_lahir' => $request->tanggal_lahir,
+            'urutan_masuk' => $urutan_masuk_terakhir, // menyimpan urutan masuk karyawan
         ]);
 
         return redirect()->route('karyawan.index');
@@ -113,13 +108,6 @@ class KaryawanController extends Controller
             'tanggal_lahir' => 'required',
         ]);
 
-        $tanggal_lahir = $request->tanggal_lahir;
-        $tahun_lahir = date('Y', strtotime($tanggal_lahir));
-
-        $tanggal_masuk = $request->tanggal_masuk;
-        $tahun_masuk = date('Y', strtotime($tanggal_masuk));
-
-
         Karyawan::where('id', $id)->update([
             // 'nik' => $nik,
             'nama' => $request->nama,
@@ -138,7 +126,7 @@ class KaryawanController extends Controller
      * @param  \App\Models\Karyawan  $karyawan
      * @return \Illuminate\Http\Response
      */
-    public function destroy( $id)
+    public function destroy($id)
     {
         Karyawan::where('id', $id)->delete();
 
