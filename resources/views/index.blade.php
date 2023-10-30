@@ -17,6 +17,7 @@
             <div class="card">
                 <div class="card-body">
                     <a href="{{ route('karyawan.create') }}" class="btn btn-primary">Tambah Data</a>
+                    <a href="{{ route('laporan') }}" class="btn btn-danger">Laporan</a>
                     <br>
                     <br>
                     <div class="table-responsive">
