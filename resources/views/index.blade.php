@@ -44,10 +44,13 @@
                                         <td>{{ $karyawan->jenis_kelamin }}</td>
                                         <td>{{ $karyawan->tanggal_lahir }}</td>
                                         <td>{{ $karyawan->tanggal_masuk }}</td>
-                                        {{-- @php
-                                            $today = Carbon::today();
-                                        @endphp --}}
-                                        <td>{{ $today - $karyawan->tanggal_masuk }}</td>
+                                        @php
+                                            $today = Carbon\Carbon::today();
+                                            $tanggalMasuk = Carbon\Carbon::parse($karyawan->tanggal_masuk);
+                                            $selisihHari = $tanggalMasuk->diffInDays($today);
+                                        @endphp
+
+                                        <td>{{ $selisihHari }}</td>
                                         <td>
                                             <a class="btn icon btn-sm btn-warning"
                                                 href="{{ route('karyawan.edit', $karyawan->id) }}" title="Edit karyawan">
